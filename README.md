@@ -133,6 +133,10 @@ college-erp-backend
 ├── mvnw
 ├── mvnw.cmd
 └── README.md
+
+```
+---
+
 # 🗄️ Database ER Diagram
 
 The following diagram represents the **database structure of the College ERP Backend System**, including students, teachers, subjects, branches, and authentication users.
