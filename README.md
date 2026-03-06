@@ -133,69 +133,84 @@ college-erp-backend
 ├── mvnw
 ├── mvnw.cmd
 └── README.md
-
-```
 # 🗄️ Database ER Diagram
 
-The following diagram represents the **Entity Relationship (ER) structure** of the College ERP backend system.
+The following diagram represents the **database structure of the College ERP Backend System**, including students, teachers, subjects, branches, and authentication users.
 
 ```mermaid
 erDiagram
 
-    USERS {
-        Long id
-        String username
-        String password
-        Boolean enabled
+    BRANCH {
+        varchar id PK
+        varchar name
+        varchar code
+        varchar description
     }
 
-    ROLES {
-        Long id
-        String name
-    }
-
-    USER_ROLES {
-        Long user_id
-        Long role_id
-    }
-
-    STUDENTS {
-        Long id
-        String name
-        String email
-        String enrollment
-        Long branch_id
-    }
-
-    TEACHERS {
-        Long id
-        String name
-        String email
-        Long branch_id
-    }
-
-    SUBJECTS {
-        Long id
-        String code
-        String name
+    SUBJECT {
+        varchar code PK
+        varchar name
+        int semester
         int credits
-        Long branch_id
+        varchar branchId FK
     }
 
-    BRANCHES {
-        Long id
-        String name
+    STUDENT {
+        varchar id PK
+        varchar firstName
+        varchar lastName
+        varchar email
+        long phone
+        long rollNo
+        long enrollmentNumber
+        int semester
+        varchar city
+        varchar state
+        varchar branchId FK
+        timestamp createdAt
+        timestamp updatedAt
     }
 
-    USERS ||--o{ USER_ROLES : has
-    ROLES ||--o{ USER_ROLES : assigned
+    TEACHER {
+        varchar id PK
+        varchar firstName
+        varchar lastName
+        varchar email
+        long phone
+        varchar designation
+        varchar branchId FK
+        timestamp createdAt
+        timestamp updatedAt
+    }
 
-    BRANCHES ||--o{ STUDENTS : contains
-    BRANCHES ||--o{ TEACHERS : contains
-    BRANCHES ||--o{ SUBJECTS : offers
+    USERS {
+        varchar id PK
+        varchar username
+        varchar password
+        enum role
+        varchar studentId
+        varchar teacherId
+        boolean enabled
+        timestamp createdAt
+        timestamp updatedAt
+    }
 
-    TEACHERS ||--o{ SUBJECTS : teaches
+    TEACHER_SUBJECT {
+        varchar teacherId FK
+        varchar subjectCode FK
+    }
+
+    BRANCH ||--o{ SUBJECT : offers
+    BRANCH ||--o{ STUDENT : has
+    BRANCH ||--o{ TEACHER : employs
+
+    TEACHER ||--o{ TEACHER_SUBJECT : teaches
+    SUBJECT ||--o{ TEACHER_SUBJECT : assigned
+
+    STUDENT ||--o| USERS : account
+    TEACHER ||--o| USERS : account
 ```
+
 
 # 🐳 Docker Deployment Architecture
 
